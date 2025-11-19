@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Безопасность девушек - Статистика и информация</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .stat-card {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: #ec4899;
+            box-shadow: 0 10px 30px rgba(236, 72, 153, 0.2);
+        }
+
+        .progress-bar {
+            animation: fillProgress 2s ease-out;
+        }
+
+        @keyframes fillProgress {
+            from {
+                width: 0;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .language-dropdown {
+            display: none;
+        }
+
+        .language-dropdown.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+
+                <a href="./index.html">
+                    <div class="flex items-center">
+                        <i class="fas fa-shield-alt text-pink-500 text-2xl mr-3"></i>
+                        <span class="font-bold text-xl text-gray-800">SafeGuard</span>
+                    </div>
+                </a>
+
+                <div class="hidden md:flex items-center space-x-8">
+                    <div class="flex space-x-4">
+                        <a id="nav-home" href="./index.html"
+                            class="flex items-center text-gray-600 hover:text-pink-500 transition">
+                            <i class="fas fa-home mr-2"></i>Главная
+                        </a>
+                        <a id="nav-about" href="./About.html"
+                            class="flex items-center text-gray-600 hover:text-pink-500 transition">
+                            <i class="fas fa-info-circle mr-2"></i>О платформе
+                        </a>
+                        <a id="nav-contact" href="./contacts.html"
+                            class="flex items-center text-gray-600 hover:text-pink-500 transition">
+                            <i class="fas fa-envelope mr-2"></i>Контакты
+                        </a>
+                    </div>
+                    <div class="relative">
+                        <button id="languageBtn"
+                            class="flex items-center text-gray-600 hover:text-pink-500 transition focus:outline-none">
+
+                            <img id="selectedFlag" src="https://flagcdn.com/w40/ru.png" alt="flag"
+                                class="w-6 h-6 rounded-full mr-2 object-cover">
+
+                            <span id="selectedLang">Русский</span>
+                            <i class="fas fa-chevron-down ml-2 text-sm"></i>
+                        </button>
+
+                        <div id="languageDropdown"
+                            class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden z-50">
+
+                            <a href="#" class="language-option flex items-center px-4 py-3 hover:bg-gray-50 transition"
+                                data-lang="uz" data-name="O'zbekcha">
+                                <img src="https://flagcdn.com/w40/uz.png" alt="Uzbekistan"
+                                    class="w-6 h-6 rounded-full mr-3 object-cover">
+                                <span class="text-gray-700">O'zbekcha</span>
+                            </a>
+
+                            <a href="#"
+                                class="language-option flex items-center px-4 py-3 hover:bg-gray-50 transition active-lang"
+                                data-lang="ru" data-name="Русский">
+                                <img src="https://flagcdn.com/w40/ru.png" alt="Russia"
+                                    class="w-6 h-6 rounded-full mr-3 object-cover">
+                                <span class="text-gray-700">Русский</span>
+                                <i class="fas fa-check ml-auto text-pink-500"></i>
+                            </a>
+
+                            <a href="#" class="language-option flex items-center px-4 py-3 hover:bg-gray-50 transition"
+                                data-lang="en" data-name="English">
+                                <img src="https://flagcdn.com/w40/gb.png" alt="UK"
+                                    class="w-6 h-6 rounded-full mr-3 object-cover">
+                                <span class="text-gray-700">English</span>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <button id="openDrawerBtn" class="md:hidden p-2 rounded-md hover:bg-gray-100 focus:outline-none">
+                    <svg class="w-7 h-7 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+
+            </div>
+        </div>
+    </nav>
+
+
+    <div id="drawerOverlay"
+        class="fixed inset-0 bg-black bg-opacity-0 pointer-events-none transition duration-300 z-40"></div>
+
+    <div id="drawer"
+        class="fixed top-0 right-0 w-[70%] max-w-[70%] h-full bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50">
+
+        <div class="flex items-center justify-between p-6 border-b">
+            <h2 class="text-xl font-bold">Меню</h2>
+
+            <button id="closeDrawerBtn" class="p-2 hover:bg-gray-100 rounded">
+                <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="p-6 space-y-6">
+            <a href="./index.html" class="flex items-center text-pink-500 font-semibold text-lg hover:text-pink-600">
+                <i class="fas fa-home mr-3"></i>Главная
+            </a>
+            <a href="./About.html" class="flex items-center text-gray-700 font-semibold text-lg hover:text-pink-500">
+                <i class="fas fa-info-circle mr-3"></i>О платформе
+            </a>
+            <a href="./contacts.html" class="flex items-center text-gray-700 font-semibold text-lg hover:text-pink-500">
+                <i class="fas fa-envelope mr-3"></i>Контакты
+            </a>
+
+            <div class="relative">
+                <button id="languageBtn"
+                    class="flex items-center text-gray-600 hover:text-pink-500 transition focus:outline-none">
+
+                    <img id="selectedFlag" src="https://flagcdn.com/w40/ru.png" alt="flag"
+                        class="w-6 h-6 rounded-full mr-2 object-cover">
+
+                    <span id="selectedLang">Русский</span>
+                    <i class="fas fa-chevron-down ml-2 text-sm"></i>
+                </button>
+
+                <div id="languageDropdown"
+                    class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden z-50">
+
+                    <a href="#" class="language-option flex items-center px-4 py-3 hover:bg-gray-50 transition"
+                        data-lang="uz" data-name="O'zbekcha">
+                        <img src="https://flagcdn.com/w40/uz.png" alt="Uzbekistan"
+                            class="w-6 h-6 rounded-full mr-3 object-cover">
+                        <span class="text-gray-700">O'zbekcha</span>
+                    </a>
+
+                    <a href="#"
+                        class="language-option flex items-center px-4 py-3 hover:bg-gray-50 transition active-lang"
+                        data-lang="ru" data-name="Русский">
+                        <img src="https://flagcdn.com/w40/ru.png" alt="Russia"
+                            class="w-6 h-6 rounded-full mr-3 object-cover">
+                        <span class="text-gray-700">Русский</span>
+                        <i class="fas fa-check ml-auto text-pink-500"></i>
+                    </a>
+
+                    <a href="#" class="language-option flex items-center px-4 py-3 hover:bg-gray-50 transition"
+                        data-lang="en" data-name="English">
+                        <img src="https://flagcdn.com/w40/gb.png" alt="UK"
+                            class="w-6 h-6 rounded-full mr-3 object-cover">
+                        <span class="text-gray-700">English</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <section class="bg-gradient-to-r from-pink-500 to-purple-600 text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 text-center fade-in">
+            <h1 class="text-5xl font-bold mb-6">Безопасность девушек на улице</h1>
+            <p class="text-xl mb-8 max-w-3xl mx-auto">Знание - первая защита. Изучайте статистику, учитесь предотвращать
+                опасные ситуации и будьте готовы к любым вызовам</p>
+            <div class="flex flex-col sm:flex-row justify-center sm:space-x-4 space-y-4 sm:space-y-0 px-4">
+                <button onclick="scrollToStats()" class="bg-white text-pink-500 px-8 py-3 rounded-full font-semibold 
+               hover:bg-gray-100 transition transform hover:scale-105 w-full sm:w-auto text-center">
+                    <i class="fas fa-chart-bar mr-2"></i>Посмотреть статистику
+                </button>
+
+                <button onclick="showEmergencyModal()" class="border-2 border-white px-8 py-3 rounded-full font-semibold
+               hover:bg-white hover:text-pink-500 transition w-full sm:w-auto text-center">
+                    <i class="fas fa-phone-alt mr-2"></i>Экстренные службы
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="stats" class="py-16">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Статистика ЧС с девушками</h2>
+
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <div class="stat-card bg-white rounded-xl p-6 shadow-lg">
+                    <div class="text-pink-500 text-4xl mb-4">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-800 mb-2">78%</h3>
+                    <p class="text-gray-600">Девушек сталкивались с harass-ментом на улице</p>
+                    <div class="mt-4 bg-gray-200 rounded-full h-2">
+                        <div class="progress-bar bg-pink-500 h-2 rounded-full" style="width: 78%"></div>
+                    </div>
+                </div>
+
+                <div class="stat-card bg-white rounded-xl p-6 shadow-lg">
+                    <div class="text-purple-500 text-4xl mb-4">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-800 mb-2">62%</h3>
+                    <p class="text-gray-600">Инцидентов происходят в poorly lit местах</p>
+                    <div class="mt-4 bg-gray-200 rounded-full h-2">
+                        <div class="progress-bar bg-purple-500 h-2 rounded-full" style="width: 62%"></div>
+                    </div>
+                </div>
+
+                <div class="stat-card bg-white rounded-xl p-6 shadow-lg">
+                    <div class="text-indigo-500 text-4xl mb-4">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-800 mb-2">85%</h3>
+                    <p class="text-gray-600">Нападений происходят вечером или ночью</p>
+                    <div class="mt-4 bg-gray-200 rounded-full h-2">
+                        <div class="progress-bar bg-indigo-500 h-2 rounded-full" style="width: 85%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl p-8 shadow-lg mb-12">
+                <h3 class="text-2xl font-bold mb-6 text-gray-800">Наиболее опасные места</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <div class="space-y-4">
+                            <div class="flex items-center p-4 bg-red-50 rounded-lg hover:bg-red-100 transition cursor-pointer"
+                                onclick="highlightLocation(1)">
+                                <div
+                                    class="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center text-white font-bold mr-4">
+                                    1</div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">Парки и скверы</h4>
+                                    <p class="text-sm text-gray-600">Особенно опасны после заката</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center p-4 bg-orange-50 rounded-lg hover:bg-orange-100 transition cursor-pointer"
+                                onclick="highlightLocation(2)">
+                                <div
+                                    class="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold mr-4">
+                                    2</div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">Подземные переходы</h4>
+                                    <p class="text-sm text-gray-600">Ограниченный visibility и выходы</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center p-4 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition cursor-pointer"
+                                onclick="highlightLocation(3)">
+                                <div
+                                    class="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center text-white font-bold mr-4">
+                                    3</div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">Пустые улицы</h4>
+                                    <p class="text-sm text-gray-600">Отсутствие свидетелей</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-100 rounded-lg p-4 relative overflow-hidden" style="height: 300px;">
+                        <div id="map-placeholder"
+                            class="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg flex items-center justify-center">
+                            <div class="text-center">
+                                <i class="fas fa-map-marked-alt text-6xl text-gray-400 mb-4"></i>
+                                <p class="text-gray-600">Интерактивная карта опасных зон</p>
+                                <p class="text-sm text-gray-500 mt-2">Нажмите на места слева для детализации</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-r from-pink-50 to-purple-50 rounded-xl p-8">
+                <h3 class="text-2xl font-bold mb-6 text-gray-800">Как защитить себя</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="text-center">
+                        <div
+                            class="w-16 h-16 bg-pink-500 rounded-full flex items-center justify-center text-white mx-auto mb-3">
+                            <i class="fas fa-route text-2xl"></i>
+                        </div>
+                        <h4 class="font-semibold mb-2">Планируйте маршрут</h4>
+                        <p class="text-sm text-gray-600">Выбирайте освещенные и людные улицы</p>
+                    </div>
+                    <div class="text-center">
+                        <div
+                            class="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center text-white mx-auto mb-3">
+                            <i class="fas fa-mobile-alt text-2xl"></i>
+                        </div>
+                        <h4 class="font-semibold mb-2">Телефон заряжен</h4>
+                        <p class="text-sm text-gray-600">Держите его доступным для экстренных вызовов</p>
+                    </div>
+                    <div class="text-center">
+                        <div
+                            class="w-16 h-16 bg-indigo-500 rounded-full flex items-center justify-center text-white mx-auto mb-3">
+                            <i class="fas fa-users text-2xl"></i>
+                        </div>
+                        <h4 class="font-semibold mb-2">Сообщайте о маршруте</h4>
+                        <p class="text-sm text-gray-600">Делитесь местоположением с близкими</p>
+                    </div>
+                    <div class="text-center">
+                        <div
+                            class="w-16 h-16 bg-pink-600 rounded-full flex items-center justify-center text-white mx-auto mb-3">
+                            <i class="fas fa-eye text-2xl"></i>
+                        </div>
+                        <h4 class="font-semibold mb-2">Будьте внимательны</h4>
+                        <p class="text-sm text-gray-600">Следите за окружением и подозрительными людьми</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="emergencyModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
+            <h3 class="text-2xl font-bold mb-6 text-gray-800">Экстренные службы</h3>
+            <div class="space-y-4">
+                <div class="flex items-center justify-between p-4 bg-red-50 rounded-lg">
+                    <div>
+                        <h4 class="font-semibold text-red-600">Полиция</h4>
+                        <p class="text-sm text-gray-600">Для немедленной помощи</p>
+                    </div>
+                    <a href="tel:102"
+                        class="bg-red-500 text-white px-6 py-2 rounded-full font-bold hover:bg-red-600 transition">102</a>
+                </div>
+                <div class="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
+                    <div>
+                        <h4 class="font-semibold text-blue-600">Скорая помощь</h4>
+                        <p class="text-sm text-gray-600">При травмах и угрозе жизни</p>
+                    </div>
+                    <a href="tel:103"
+                        class="bg-blue-500 text-white px-6 py-2 rounded-full font-bold hover:bg-blue-600 transition">103</a>
+                </div>
+                <div class="flex items-center justify-between p-4 bg-green-50 rounded-lg">
+                    <div>
+                        <h4 class="font-semibold text-green-600">Горячая линия</h4>
+                        <p class="text-sm text-gray-600">Поддержка жертв насилия</p>
+                    </div>
+                    <a href="tel:88007000022"
+                        class="bg-green-500 text-white px-6 py-2 rounded-full font-bold hover:bg-green-600 transition">8-800-7000-022</a>
+                </div>
+            </div>
+            <button onclick="closeEmergencyModal()"
+                class="mt-6 w-full bg-gray-200 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-300 transition">
+                Закрыть
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function scrollToStats() {
+            document.getElementById('stats').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showEmergencyModal() {
+            document.getElementById('emergencyModal').classList.remove('hidden');
+        }
+
+        function closeEmergencyModal() {
+            document.getElementById('emergencyModal').classList.add('hidden');
+        }
+
+        function highlightLocation(id) {
+            const locations = {
+                1: 'Парки и скверы - зоны повышенного риска после 20:00',
+                2: 'Подземные переходы - ограниченная видимость и выходы',
+                3: 'Пустые улицы - отсутствие свидетелей и помощи'
+            };
+
+            const mapPlaceholder = document.getElementById('map-placeholder');
+            mapPlaceholder.innerHTML = `
+                <div class="p-8 text-center">
+                    <i class="fas fa-map-pin text-6xl text-pink-500 mb-4"></i>
+                    <p class="text-lg font-semibold text-gray-800">${locations[id]}</p>
+                    <p class="text-sm text-gray-600 mt-2">Нажмите снова для сброса</p>
+                </div>
+            `;
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const observerOptions = {
+                threshold: 0.5,
+                rootMargin: '0px'
+            };
+
+            const observer = new IntersectionObserver(function (entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.stat-card').forEach(card => {
+                observer.observe(card);
+            });
+        });
+
+
+
+        // =================
+        // DROB DOWN START
+        // =================
+        const openBtn = document.getElementById("openDrawerBtn");
+        const closeBtn = document.getElementById("closeDrawerBtn");
+        const drawer = document.getElementById("drawer");
+        const overlay = document.getElementById("drawerOverlay");
+
+        function openDrawer() {
+            drawer.classList.remove("translate-x-full");
+            overlay.classList.remove("pointer-events-none");
+            overlay.classList.add("bg-opacity-40");
+        }
+
+        function closeDrawer() {
+            drawer.classList.add("translate-x-full");
+            overlay.classList.add("pointer-events-none");
+            overlay.classList.remove("bg-opacity-40");
+        }
+
+        openBtn.addEventListener("click", openDrawer);
+        closeBtn.addEventListener("click", closeDrawer);
+        overlay.addEventListener("click", closeDrawer);
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") closeDrawer();
+        });
+
+
+
+
+
+        // =================
+        // SELCT  START
+        // =================
+        const languageBtn = document.getElementById("languageBtn");
+        const languageDropdown = document.getElementById("languageDropdown");
+        const selectedFlag = document.getElementById("selectedFlag");
+        const selectedLang = document.getElementById("selectedLang");
+
+        const languageOptions = document.querySelectorAll(".language-option");
+
+        languageBtn.addEventListener("click", () => {
+            languageDropdown.classList.toggle("hidden");
+        });
+
+        languageOptions.forEach(option => {
+            option.addEventListener("click", (e) => {
+                e.preventDefault();
+
+                const flagCode = option.dataset.lang;
+                const langName = option.dataset.name;
+                if (flagCode === "uz") selectedFlag.src = "https://flagcdn.com/w40/uz.png";
+                if (flagCode === "ru") selectedFlag.src = "https://flagcdn.com/w40/ru.png";
+                if (flagCode === "en") selectedFlag.src = "https://flagcdn.com/w40/gb.png";
+                selectedLang.textContent = langName;
+                languageDropdown.classList.add("hidden");
+                document.querySelectorAll(".language-option i").forEach(i => i.remove());
+                const checkIcon = document.createElement("i");
+                checkIcon.classList = "fas fa-check ml-auto text-pink-500";
+                option.appendChild(checkIcon);
+            });
+        });
+        document.addEventListener("click", (e) => {
+            if (!languageBtn.contains(e.target) && !languageDropdown.contains(e.target)) {
+                languageDropdown.classList.add("hidden");
+            }
+        });
+
+
+
+        const currentPage = window.location.pathname.split("/").pop();
+
+        const navHome = document.getElementById('nav-home');
+        const navAbout = document.getElementById('nav-about');
+        const navContact = document.getElementById('nav-contact');
+
+        if (currentPage === 'index.html') {
+            navHome.classList.add('text-pink-500', 'font-medium');
+            navAbout.classList.remove('text-pink-500', 'font-medium');
+            navContact.classList.remove('text-pink-500', 'font-medium');
+        } else if (currentPage === 'About.html') {
+            navAbout.classList.add('text-pink-500', 'font-medium');
+            navHome.classList.remove('text-pink-500', 'font-medium');
+            navContact.classList.remove('text-pink-500', 'font-medium');
+        } else if (currentPage === 'contacts.html') {
+            navContact.classList.add('text-pink-500', 'font-medium');
+            navHome.classList.remove('text-pink-500', 'font-medium');
+            navAbout.classList.remove('text-pink-500', 'font-medium');
+        }
+
+    </script>
+</body>
+
+</html>

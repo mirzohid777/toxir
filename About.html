@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeGuard - Наша платформа безопасности</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .pulse-button {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 20px rgba(236, 72, 153, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(236, 72, 153, 0);
+            }
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+     <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+
+                <a href="./index.html">
+                    <div class="flex items-center">
+                        <i class="fas fa-shield-alt text-pink-500 text-2xl mr-3"></i>
+                        <span class="font-bold text-xl text-gray-800">SafeGuard</span>
+                    </div>
+                </a>
+
+                <div class="hidden md:flex items-center space-x-8">
+                    <div class="flex space-x-4">
+                        <a id="nav-home" href="./index.html"
+                            class="flex items-center text-gray-600 hover:text-pink-500 transition">
+                            <i class="fas fa-home mr-2"></i>Главная
+                        </a>
+                        <a id="nav-about" href="./About.html"
+                            class="flex items-center text-gray-600 hover:text-pink-500 transition">
+                            <i class="fas fa-info-circle mr-2"></i>О платформе
+                        </a>
+                        <a id="nav-contact" href="./contacts.html"
+                            class="flex items-center text-gray-600 hover:text-pink-500 transition">
+                            <i class="fas fa-envelope mr-2"></i>Контакты
+                        </a>
+                    </div>
+                    <div class="relative">
+                        <button id="languageBtn"
+                            class="flex items-center text-gray-600 hover:text-pink-500 transition focus:outline-none">
+
+                            <img id="selectedFlag" src="https://flagcdn.com/w40/ru.png" alt="flag"
+                                class="w-6 h-6 rounded-full mr-2 object-cover">
+
+                            <span id="selectedLang">Русский</span>
+                            <i class="fas fa-chevron-down ml-2 text-sm"></i>
+                        </button>
+
+                        <div id="languageDropdown"
+                            class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden z-50">
+
+                            <a href="#" class="language-option flex items-center px-4 py-3 hover:bg-gray-50 transition"
+                                data-lang="uz" data-name="O'zbekcha">
+                                <img src="https://flagcdn.com/w40/uz.png" alt="Uzbekistan"
+                                    class="w-6 h-6 rounded-full mr-3 object-cover">
+                                <span class="text-gray-700">O'zbekcha</span>
+                            </a>
+
+                            <a href="#"
+                                class="language-option flex items-center px-4 py-3 hover:bg-gray-50 transition active-lang"
+                                data-lang="ru" data-name="Русский">
+                                <img src="https://flagcdn.com/w40/ru.png" alt="Russia"
+                                    class="w-6 h-6 rounded-full mr-3 object-cover">
+                                <span class="text-gray-700">Русский</span>
+                                <i class="fas fa-check ml-auto text-pink-500"></i>
+                            </a>
+
+                            <a href="#" class="language-option flex items-center px-4 py-3 hover:bg-gray-50 transition"
+                                data-lang="en" data-name="English">
+                                <img src="https://flagcdn.com/w40/gb.png" alt="UK"
+                                    class="w-6 h-6 rounded-full mr-3 object-cover">
+                                <span class="text-gray-700">English</span>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <button id="openDrawerBtn" class="md:hidden p-2 rounded-md hover:bg-gray-100 focus:outline-none">
+                    <svg class="w-7 h-7 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+
+            </div>
+        </div>
+    </nav>
+
+
+    <div id="drawerOverlay"
+        class="fixed inset-0 bg-black bg-opacity-0 pointer-events-none transition duration-300 z-40"></div>
+
+    <div id="drawer"
+        class="fixed top-0 right-0 w-[70%] max-w-[70%] h-full bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50">
+
+        <div class="flex items-center justify-between p-6 border-b">
+            <h2 class="text-xl font-bold">Меню</h2>
+
+            <button id="closeDrawerBtn" class="p-2 hover:bg-gray-100 rounded">
+                <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="p-6 space-y-6">
+            <a href="./index.html" class="flex items-center text-pink-500 font-semibold text-lg hover:text-pink-600">
+                <i class="fas fa-home mr-3"></i>Главная
+            </a>
+            <a href="./About.html" class="flex items-center text-gray-700 font-semibold text-lg hover:text-pink-500">
+                <i class="fas fa-info-circle mr-3"></i>О платформе
+            </a>
+            <a href="./contacts.html" class="flex items-center text-gray-700 font-semibold text-lg hover:text-pink-500">
+                <i class="fas fa-envelope mr-3"></i>Контакты
+            </a>
+
+            <div class="relative">
+                <button id="languageBtn"
+                    class="flex items-center text-gray-600 hover:text-pink-500 transition focus:outline-none">
+
+                    <img id="selectedFlag" src="https://flagcdn.com/w40/ru.png" alt="flag"
+                        class="w-6 h-6 rounded-full mr-2 object-cover">
+
+                    <span id="selectedLang">Русский</span>
+                    <i class="fas fa-chevron-down ml-2 text-sm"></i>
+                </button>
+
+                <div id="languageDropdown"
+                    class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden z-50">
+
+                    <a href="#" class="language-option flex items-center px-4 py-3 hover:bg-gray-50 transition"
+                        data-lang="uz" data-name="O'zbekcha">
+                        <img src="https://flagcdn.com/w40/uz.png" alt="Uzbekistan"
+                            class="w-6 h-6 rounded-full mr-3 object-cover">
+                        <span class="text-gray-700">O'zbekcha</span>
+                    </a>
+
+                    <a href="#"
+                        class="language-option flex items-center px-4 py-3 hover:bg-gray-50 transition active-lang"
+                        data-lang="ru" data-name="Русский">
+                        <img src="https://flagcdn.com/w40/ru.png" alt="Russia"
+                            class="w-6 h-6 rounded-full mr-3 object-cover">
+                        <span class="text-gray-700">Русский</span>
+                        <i class="fas fa-check ml-auto text-pink-500"></i>
+                    </a>
+
+                    <a href="#" class="language-option flex items-center px-4 py-3 hover:bg-gray-50 transition"
+                        data-lang="en" data-name="English">
+                        <img src="https://flagcdn.com/w40/gb.png" alt="UK"
+                            class="w-6 h-6 rounded-full mr-3 object-cover">
+                        <span class="text-gray-700">English</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <section
+        class="bg-gradient-to-br from-purple-600 via-pink-500 to-red-500 text-white py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-black opacity-20"></div>
+        <div class="max-w-7xl mx-auto px-4 relative z-10">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h1 class="text-5xl font-bold mb-6">SafeGuard Platform</h1>
+                    <p class="text-xl mb-8">Инновационная система безопасности, которая всегда с вами. Мгновенная
+                        помощь, отслеживание маршрута и круглосуточная поддержка.</p>
+                    <div class="flex flex-col sm:flex-row justify-center sm:space-x-4 space-y-4 sm:space-y-0 px-4">
+                        <button onclick="startDemo()" class="bg-white text-pink-500 px-8 py-3 rounded-full font-semibold 
+               hover:bg-gray-100 transition transform hover:scale-105
+               w-full sm:w-auto text-center">
+                            <i class="fas fa-play mr-2"></i>Попробовать демо
+                        </button>
+
+                        <button onclick="scrollToFeatures()" class="border-2 border-white px-8 py-3 rounded-full font-semibold 
+               hover:bg-white hover:text-pink-500 transition
+               w-full sm:w-auto text-center">
+                            <i class="fas fa-info-circle mr-2"></i>Узнать больше
+                        </button>
+                    </div>
+
+                </div>
+                <div class="floating">
+                    <div class="bg-white bg-opacity-20 backdrop-blur-lg rounded-2xl p-8">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-white bg-opacity-30 rounded-lg p-4 text-center">
+                                <i class="fas fa-map-marked-alt text-3xl mb-2"></i>
+                                <p class="text-sm">GPS Tracking</p>
+                            </div>
+                            <div class="bg-white bg-opacity-30 rounded-lg p-4 text-center">
+                                <i class="fas fa-bell text-3xl mb-2"></i>
+                                <p class="text-sm">SOS Alert</p>
+                            </div>
+                            <div class="bg-white bg-opacity-30 rounded-lg p-4 text-center">
+                                <i class="fas fa-users text-3xl mb-2"></i>
+                                <p class="text-sm">Community</p>
+                            </div>
+                            <div class="bg-white bg-opacity-30 rounded-lg p-4 text-center">
+                                <i class="fas fa-shield-alt text-3xl mb-2"></i>
+                                <p class="text-sm">24/7 Support</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 gradient-text">Как работает SafeGuard</h2>
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div
+                        class="w-20 h-20 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full flex items-center justify-center text-white mx-auto mb-4 text-2xl font-bold">
+                        1
+                    </div>
+                    <h3 class="font-semibold mb-2">Установка</h3>
+                    <p class="text-sm text-gray-600">Скачайте приложение и создайте профиль за 2 минуты</p>
+                </div>
+                <div class="text-center">
+                    <div
+                        class="w-20 h-20 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full flex items-center justify-center text-white mx-auto mb-4 text-2xl font-bold">
+                        2
+                    </div>
+                    <h3 class="font-semibold mb-2">Настройка</h3>
+                    <p class="text-sm text-gray-600">Добавьте доверенные контакты и установите безопасные зоны</p>
+                </div>
+                <div class="text-center">
+                    <div
+                        class="w-20 h-20 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-full flex items-center justify-center text-white mx-auto mb-4 text-2xl font-bold">
+                        3
+                    </div>
+                    <h3 class="font-semibold mb-2">Активация</h3>
+                    <p class="text-sm text-gray-600">Включите режим сопровождения при выходе из дома</p>
+                </div>
+                <div class="text-center">
+                    <div
+                        class="w-20 h-20 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center text-white mx-auto mb-4 text-2xl font-bold">
+                        4
+                    </div>
+                    <h3 class="font-semibold mb-2">Защита</h3>
+                    <p class="text-sm text-gray-600">Мгновенная помощь при угрозе или SOS сигнале</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="py-16">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Ключевые функции</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="feature-card bg-white rounded-xl p-8 shadow-lg">
+                    <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-location-arrow text-pink-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Live GPS Tracking</h3>
+                    <p class="text-gray-600 mb-4">Отслеживание местоположения в реальном времени с точностью до 5 метров
+                    </p>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Обновление каждые 10 секунд</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>История перемещений</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Гео-зоны безопасности</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card bg-white rounded-xl p-8 shadow-lg">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-hand-paper text-purple-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">SOS Кнопка</h3>
+                    <p class="text-gray-600 mb-4">Мгновенная отправка тревожного сигнала одним нажатием</p>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Автоматический вызов 102</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Оповещение доверенных лиц</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Запись аудио и видео</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card bg-white rounded-xl p-8 shadow-lg">
+                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-user-friends text-indigo-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Сообщество поддержки</h3>
+                    <p class="text-gray-600 mb-4">Соединение с другими пользователями для взаимопомощи</p>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Соседи-помощники</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Чат поддержки</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Советы от экспертов</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card bg-white rounded-xl p-8 shadow-lg">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-route text-green-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Безопасные маршруты</h3>
+                    <p class="text-gray-600 mb-4">Построение безопасных путей с учетом освещенности и людности</p>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Анализ опасных зон</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Альтернативные пути</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Оценка безопасности</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card bg-white rounded-xl p-8 shadow-lg">
+                    <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-bell text-yellow-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Умные уведомления</h3>
+                    <p class="text-gray-600 mb-4">Проактивные предупреждения о потенциальных угрозах</p>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Оповещения о ЧС</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Напоминания о безопасности</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Проверка статуса</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card bg-white rounded-xl p-8 shadow-lg">
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-headset text-red-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">24/7 Поддержка</h3>
+                    <p class="text-gray-600 mb-4">Круглосуточная помощь от профессиональных операторов</p>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Горячая линия</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Психологическая помощь</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Юридические консультации</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-gradient-to-r from-purple-50 to-pink-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Выберите подходящий план</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition">
+                    <h3 class="text-xl font-semibold mb-4">Basic</h3>
+                    <div class="text-3xl font-bold mb-6">Бесплатно</div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i>Базовое
+                            отслеживание</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i>SOS кнопка</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i>1 доверенный
+                            контакт</li>
+                        <li class="flex items-center text-gray-400"><i class="fas fa-times mr-3"></i>История перемещений
+                        </li>
+                    </ul>
+                    <button
+                        class="w-full bg-gray-200 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-300 transition">
+                        Текущий план
+                    </button>
+                </div>
+
+                <div
+                    class="bg-gradient-to-br from-pink-500 to-purple-600 text-white rounded-xl p-8 shadow-xl transform scale-105">
+                    <div
+                        class="bg-yellow-400 text-gray-800 text-sm font-semibold px-3 py-1 rounded-full inline-block mb-4">
+                        ПОПУЛЯРНЫЙ
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Premium</h3>
+                    <div class="text-3xl font-bold mb-6">₽299<span class="text-lg font-normal">/месяц</span></div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center"><i class="fas fa-check mr-3"></i>Полное отслеживание GPS</li>
+                        <li class="flex items-center"><i class="fas fa-check mr-3"></i>Неограниченные контакты</li>
+                        <li class="flex items-center"><i class="fas fa-check mr-3"></i>История на 30 дней</li>
+                        <li class="flex items-center"><i class="fas fa-check mr-3"></i>Безопасные маршруты</li>
+                        <li class="flex items-center"><i class="fas fa-check mr-3"></i>Приоритетная поддержка</li>
+                    </ul>
+                    <button
+                        class="w-full bg-white text-pink-500 py-3 rounded-lg font-semibold hover:bg-gray-100 transition pulse-button">
+                        Выбрать Premium
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition">
+                    <h3 class="text-xl font-semibold mb-4">Family</h3>
+                    <div class="text-3xl font-bold mb-6">₽599<span class="text-lg font-normal">/месяц</span></div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i>Все функции
+                            Premium</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i>До 5 членов семьи
+                        </li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i>Семейная карта
+                        </li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i>Групповые
+                            уведомления</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i>Премиум поддержка
+                        </li>
+                    </ul>
+                    <button
+                        class="w-full bg-purple-500 text-white py-3 rounded-lg font-semibold hover:bg-purple-600 transition">
+                        Выбрать Family
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="demoModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
+            <h3 class="text-2xl font-bold mb-6 text-gray-800">Попробуйте SafeGuard</h3>
+            <div class="space-y-4">
+                <div class="bg-gray-100 rounded-lg p-4">
+                    <h4 class="font-semibold mb-2">Интерактивная демонстрация</h4>
+                    <p class="text-sm text-gray-600 mb-4">Нажмите на кнопку SOS ниже, чтобы увидеть, как работает
+                        экстренное оповещение</p>
+                    <button onclick="simulateSOS()"
+                        class="w-full bg-red-500 text-white py-4 rounded-lg font-bold text-xl hover:bg-red-600 transition">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>SOS
+                    </button>
+                </div>
+                <div id="sosResult" class="hidden bg-green-50 rounded-lg p-4">
+                    <p class="text-green-700 font-semibold"><i class="fas fa-check-circle mr-2"></i>Сигнал отправлен!
+                    </p>
+                    <p class="text-sm text-gray-600 mt-2">Доверенные контакты и службы экстренной помощи уведомлены</p>
+                </div>
+            </div>
+            <button onclick="closeDemo()"
+                class="mt-6 w-full bg-gray-200 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-300 transition">
+                Закрыть
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function scrollToFeatures() {
+            document.getElementById('features').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function startDemo() {
+            document.getElementById('demoModal').classList.remove('hidden');
+        }
+
+        function closeDemo() {
+            document.getElementById('demoModal').classList.add('hidden');
+            document.getElementById('sosResult').classList.add('hidden');
+        }
+
+        function simulateSOS() {
+            const result = document.getElementById('sosResult');
+            result.classList.remove('hidden');
+
+            if (navigator.vibrate) {
+                navigator.vibrate([200, 100, 200]);
+            }
+
+            const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmFgU7k9n1unEiBC13yO/eizEIHWq+8+OWT');
+            audio.play();
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const observer = new IntersectionObserver(function (entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.feature-card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'all 0.6s ease';
+                observer.observe(card);
+            });
+        });
+
+
+
+        // =================
+        // DROB DOWN START
+        // =================
+        const openBtn = document.getElementById("openDrawerBtn");
+        const closeBtn = document.getElementById("closeDrawerBtn");
+        const drawer = document.getElementById("drawer");
+        const overlay = document.getElementById("drawerOverlay");
+
+        function openDrawer() {
+            drawer.classList.remove("translate-x-full");
+            overlay.classList.remove("pointer-events-none");
+            overlay.classList.add("bg-opacity-40");
+        }
+
+        function closeDrawer() {
+            drawer.classList.add("translate-x-full");
+            overlay.classList.add("pointer-events-none");
+            overlay.classList.remove("bg-opacity-40");
+        }
+
+        openBtn.addEventListener("click", openDrawer);
+        closeBtn.addEventListener("click", closeDrawer);
+        overlay.addEventListener("click", closeDrawer);
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") closeDrawer();
+        });
+
+
+        
+        // =================
+        // SELCT  START
+        // =================
+        const languageBtn = document.getElementById("languageBtn");
+        const languageDropdown = document.getElementById("languageDropdown");
+        const selectedFlag = document.getElementById("selectedFlag");
+        const selectedLang = document.getElementById("selectedLang");
+
+        const languageOptions = document.querySelectorAll(".language-option");
+
+        languageBtn.addEventListener("click", () => {
+            languageDropdown.classList.toggle("hidden");
+        });
+
+        languageOptions.forEach(option => {
+            option.addEventListener("click", (e) => {
+                e.preventDefault();
+
+                const flagCode = option.dataset.lang;
+                const langName = option.dataset.name;
+                if (flagCode === "uz") selectedFlag.src = "https://flagcdn.com/w40/uz.png";
+                if (flagCode === "ru") selectedFlag.src = "https://flagcdn.com/w40/ru.png";
+                if (flagCode === "en") selectedFlag.src = "https://flagcdn.com/w40/gb.png";
+                selectedLang.textContent = langName;
+                languageDropdown.classList.add("hidden");
+                document.querySelectorAll(".language-option i").forEach(i => i.remove());
+                const checkIcon = document.createElement("i");
+                checkIcon.classList = "fas fa-check ml-auto text-pink-500";
+                option.appendChild(checkIcon);
+            });
+        });
+        document.addEventListener("click", (e) => {
+            if (!languageBtn.contains(e.target) && !languageDropdown.contains(e.target)) {
+                languageDropdown.classList.add("hidden");
+            }
+        });
+
+
+
+        const currentPage = window.location.pathname.split("/").pop();
+
+        const navHome = document.getElementById('nav-home');
+        const navAbout = document.getElementById('nav-about');
+        const navContact = document.getElementById('nav-contact');
+
+        if (currentPage === 'index.html') {
+            navHome.classList.add('text-pink-500', 'font-medium');
+            navAbout.classList.remove('text-pink-500', 'font-medium');
+            navContact.classList.remove('text-pink-500', 'font-medium');
+        } else if (currentPage === 'About.html') {
+            navAbout.classList.add('text-pink-500', 'font-medium');
+            navHome.classList.remove('text-pink-500', 'font-medium');
+            navContact.classList.remove('text-pink-500', 'font-medium');
+        } else if (currentPage === 'contacts.html') {
+            navContact.classList.add('text-pink-500', 'font-medium');
+            navHome.classList.remove('text-pink-500', 'font-medium');
+            navAbout.classList.remove('text-pink-500', 'font-medium');
+        }
+
+    </script>
+</body>
+
+</html>

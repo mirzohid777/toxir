@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeGuard - Контакты и регистрация</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .contact-card {
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .form-input:focus {
+            border-color: #ec4899;
+            box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.1);
+        }
+
+        .map-container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .map-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .success-message {
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+   <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+
+                <a href="./index.html">
+                    <div class="flex items-center">
+                        <i class="fas fa-shield-alt text-pink-500 text-2xl mr-3"></i>
+                        <span class="font-bold text-xl text-gray-800">SafeGuard</span>
+                    </div>
+                </a>
+
+                <div class="hidden md:flex items-center space-x-8">
+                    <div class="flex space-x-4">
+                        <a id="nav-home" href="./index.html"
+                            class="flex items-center text-gray-600 hover:text-pink-500 transition">
+                            <i class="fas fa-home mr-2"></i>Главная
+                        </a>
+                        <a id="nav-about" href="./About.html"
+                            class="flex items-center text-gray-600 hover:text-pink-500 transition">
+                            <i class="fas fa-info-circle mr-2"></i>О платформе
+                        </a>
+                        <a id="nav-contact" href="./contacts.html"
+                            class="flex items-center text-gray-600 hover:text-pink-500 transition">
+                            <i class="fas fa-envelope mr-2"></i>Контакты
+                        </a>
+                    </div>
+                    <div class="relative">
+                        <button id="languageBtn"
+                            class="flex items-center text-gray-600 hover:text-pink-500 transition focus:outline-none">
+
+                            <img id="selectedFlag" src="https://flagcdn.com/w40/ru.png" alt="flag"
+                                class="w-6 h-6 rounded-full mr-2 object-cover">
+
+                            <span id="selectedLang">Русский</span>
+                            <i class="fas fa-chevron-down ml-2 text-sm"></i>
+                        </button>
+
+                        <div id="languageDropdown"
+                            class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden z-50">
+
+                            <a href="#" class="language-option flex items-center px-4 py-3 hover:bg-gray-50 transition"
+                                data-lang="uz" data-name="O'zbekcha">
+                                <img src="https://flagcdn.com/w40/uz.png" alt="Uzbekistan"
+                                    class="w-6 h-6 rounded-full mr-3 object-cover">
+                                <span class="text-gray-700">O'zbekcha</span>
+                            </a>
+
+                            <a href="#"
+                                class="language-option flex items-center px-4 py-3 hover:bg-gray-50 transition active-lang"
+                                data-lang="ru" data-name="Русский">
+                                <img src="https://flagcdn.com/w40/ru.png" alt="Russia"
+                                    class="w-6 h-6 rounded-full mr-3 object-cover">
+                                <span class="text-gray-700">Русский</span>
+                                <i class="fas fa-check ml-auto text-pink-500"></i>
+                            </a>
+
+                            <a href="#" class="language-option flex items-center px-4 py-3 hover:bg-gray-50 transition"
+                                data-lang="en" data-name="English">
+                                <img src="https://flagcdn.com/w40/gb.png" alt="UK"
+                                    class="w-6 h-6 rounded-full mr-3 object-cover">
+                                <span class="text-gray-700">English</span>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <button id="openDrawerBtn" class="md:hidden p-2 rounded-md hover:bg-gray-100 focus:outline-none">
+                    <svg class="w-7 h-7 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+
+            </div>
+        </div>
+    </nav>
+
+
+    <div id="drawerOverlay"
+        class="fixed inset-0 bg-black bg-opacity-0 pointer-events-none transition duration-300 z-40"></div>
+
+    <div id="drawer"
+        class="fixed top-0 right-0 w-[70%] max-w-[70%] h-full bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50">
+
+        <div class="flex items-center justify-between p-6 border-b">
+            <h2 class="text-xl font-bold">Меню</h2>
+
+            <button id="closeDrawerBtn" class="p-2 hover:bg-gray-100 rounded">
+                <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="p-6 space-y-6">
+            <a href="./index.html" class="flex items-center text-pink-500 font-semibold text-lg hover:text-pink-600">
+                <i class="fas fa-home mr-3"></i>Главная
+            </a>
+            <a href="./About.html" class="flex items-center text-gray-700 font-semibold text-lg hover:text-pink-500">
+                <i class="fas fa-info-circle mr-3"></i>О платформе
+            </a>
+            <a href="./contacts.html" class="flex items-center text-gray-700 font-semibold text-lg hover:text-pink-500">
+                <i class="fas fa-envelope mr-3"></i>Контакты
+            </a>
+
+            <div class="relative">
+                <button id="languageBtn"
+                    class="flex items-center text-gray-600 hover:text-pink-500 transition focus:outline-none">
+
+                    <img id="selectedFlag" src="https://flagcdn.com/w40/ru.png" alt="flag"
+                        class="w-6 h-6 rounded-full mr-2 object-cover">
+
+                    <span id="selectedLang">Русский</span>
+                    <i class="fas fa-chevron-down ml-2 text-sm"></i>
+                </button>
+
+                <div id="languageDropdown"
+                    class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden z-50">
+
+                    <a href="#" class="language-option flex items-center px-4 py-3 hover:bg-gray-50 transition"
+                        data-lang="uz" data-name="O'zbekcha">
+                        <img src="https://flagcdn.com/w40/uz.png" alt="Uzbekistan"
+                            class="w-6 h-6 rounded-full mr-3 object-cover">
+                        <span class="text-gray-700">O'zbekcha</span>
+                    </a>
+
+                    <a href="#"
+                        class="language-option flex items-center px-4 py-3 hover:bg-gray-50 transition active-lang"
+                        data-lang="ru" data-name="Русский">
+                        <img src="https://flagcdn.com/w40/ru.png" alt="Russia"
+                            class="w-6 h-6 rounded-full mr-3 object-cover">
+                        <span class="text-gray-700">Русский</span>
+                        <i class="fas fa-check ml-auto text-pink-500"></i>
+                    </a>
+
+                    <a href="#" class="language-option flex items-center px-4 py-3 hover:bg-gray-50 transition"
+                        data-lang="en" data-name="English">
+                        <img src="https://flagcdn.com/w40/gb.png" alt="UK"
+                            class="w-6 h-6 rounded-full mr-3 object-cover">
+                        <span class="text-gray-700">English</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <section class="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h1 class="text-4xl font-bold mb-6">Свяжитесь с нами</h1>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">Мы всегда готовы помочь. Задайте вопрос, оставьте отзыв или
+                зарегистрируйтесь в нашей системе безопасности</p>
+        </div>
+    </section>
+
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">О компании SafeGuard</h2>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4 text-gray-800">Наша миссия</h3>
+                    <p class="text-gray-600 mb-6">
+                        SafeGuard - это не просто приложение, это целая экосистема безопасности, созданная для защиты
+                        девушек в городской среде. Мы объединяем современные технологии с заботой о людях, чтобы сделать
+                        мир безопаснее.
+                    </p>
+                    <p class="text-gray-600 mb-6">
+                        С 2020 года мы помогли более 50,000 пользователей почувствовать себя увереннее на улицах города.
+                        Наша команда состоит из экспертов в области безопасности, IT-специалистов и психологов.
+                    </p>
+                    <div class="grid grid-cols-3 gap-4 mb-6">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-pink-500">50K+</div>
+                            <p class="text-sm text-gray-600">Пользователей</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-purple-500">24/7</div>
+                            <p class="text-sm text-gray-600">Поддержка</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-indigo-500">98%</div>
+                            <p class="text-sm text-gray-600">Довольных</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="map-container rounded-xl p-8 relative">
+                    <div class="relative z-10">
+                        <div class="bg-white bg-opacity-90 rounded-lg p-6">
+                            <h4 class="font-semibold mb-4 text-gray-800">Наш главный офис</h4>
+                            <div class="space-y-3">
+                                <div class="flex items-center">
+                                    <i class="fas fa-map-marker-alt text-pink-500 mr-3"></i>
+                                    <span class="text-gray-700">г. Москва, ул. Тверская, 1</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-phone text-pink-500 mr-3"></i>
+                                    <span class="text-gray-700">+7 (495) 123-45-67</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-envelope text-pink-500 mr-3"></i>
+                                    <span class="text-gray-700">info@safeguard.ru</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-clock text-pink-500 mr-3"></i>
+                                    <span class="text-gray-700">Пн-Пт: 9:00 - 18:00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Контактная информация</h2>
+            <div class="grid md:grid-cols-4 gap-6">
+                <div class="contact-card bg-white rounded-xl p-6 shadow-lg text-center">
+                    <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-headset text-pink-500 text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold mb-2">Поддержка</h3>
+                    <p class="text-gray-600 mb-3">Круглосуточная помощь</p>
+                    <a href="tel:88001234567" class="text-pink-500 font-semibold">8-800-123-45-67</a>
+                </div>
+
+                <div class="contact-card bg-white rounded-xl p-6 shadow-lg text-center">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-envelope text-purple-500 text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold mb-2">Email</h3>
+                    <p class="text-gray-600 mb-3">Пишите нам</p>
+                    <a href="mailto:support@safeguard.ru" class="text-purple-500 font-semibold">support@safeguard.ru</a>
+                </div>
+
+                <div class="contact-card bg-white rounded-xl p-6 shadow-lg text-center">
+                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fab fa-telegram text-indigo-500 text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold mb-2">Telegram</h3>
+                    <p class="text-gray-600 mb-3">Быстрая связь</p>
+                    <a href="#" class="text-indigo-500 font-semibold">@SafeGuardBot</a>
+                </div>
+
+                <div class="contact-card bg-white rounded-xl p-6 shadow-lg text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fab fa-whatsapp text-green-500 text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold mb-2">WhatsApp</h3>
+                    <p class="text-gray-600 mb-3">Онлайн консультант</p>
+                    <a href="#" class="text-green-500 font-semibold">+7 (999) 123-45-67</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-gradient-to-r from-purple-50 to-pink-50">
+        <div class="max-w-3xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Регистрация в SafeGuard</h2>
+            <div class="bg-white rounded-xl shadow-xl p-8">
+                <form id="registrationForm" onsubmit="handleSubmit(event)">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">
+                                Имя <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" name="firstName" required
+                                class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none transition"
+                                placeholder="Введите ваше имя">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">
+                                Фамилия <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" name="lastName" required
+                                class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none transition"
+                                placeholder="Введите вашу фамилию">
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <label class="block text-gray-700 font-semibold mb-2">
+                            Отчество
+                        </label>
+                        <input type="text" name="middleName"
+                            class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none transition"
+                            placeholder="Введите ваше отчество">
+                    </div>
+
+                    <div class="mt-6">
+                        <label class="block text-gray-700 font-semibold mb-2">
+                            Год рождения <span class="text-red-500">*</span>
+                        </label>
+                        <input type="number" name="birthYear" required min="1920" max="2006"
+                            class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none transition"
+                            placeholder="Например: 1995">
+                    </div>
+
+                    <div class="mt-6">
+                        <label class="block text-gray-700 font-semibold mb-2">
+                            Номер телефона <span class="text-red-500">*</span>
+                        </label>
+                        <input type="tel" name="phone" required pattern="[+]?[0-9]{10,15}"
+                            class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none transition"
+                            placeholder="+7 (999) 123-45-67">
+                    </div>
+
+                    <div class="mt-6">
+                        <label class="block text-gray-700 font-semibold mb-2">
+                            Адрес проживания
+                        </label>
+                        <input type="text" name="address"
+                            class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none transition"
+                            placeholder="Город, улица, дом, квартира">
+                    </div>
+
+                    <div class="mt-6">
+                        <label class="block text-gray-700 font-semibold mb-2">
+                            Комментарий
+                        </label>
+                        <textarea name="comments" rows="4"
+                            class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none transition"
+                            placeholder="Расскажите, почему вы хотите присоединиться к SafeGuard..."></textarea>
+                    </div>
+
+                    <div class="mt-6">
+                        <label class="flex items-center">
+                            <input type="checkbox" required class="mr-3 w-5 h-5 text-pink-500">
+                            <span class="text-gray-700">
+                                Я согласен с <a href="#" class="text-pink-500 hover:underline">условиями
+                                    использования</a>
+                                и <a href="#" class="text-pink-500 hover:underline">политикой конфиденциальности</a>
+                            </span>
+                        </label>
+                    </div>
+
+                    <div class="mt-8">
+                        <button type="submit"
+                            class="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white py-4 rounded-lg font-semibold text-lg hover:from-pink-600 hover:to-purple-700 transition transform hover:scale-105">
+                            <i class="fas fa-shield-alt mr-2"></i>
+                            Зарегистрироваться в SafeGuard
+                        </button>
+                    </div>
+                </form>
+
+                <div id="successMessage"
+                    class="hidden mt-6 bg-green-50 border border-green-200 rounded-lg p-4 success-message">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-green-500 text-2xl mr-3"></i>
+                        <div>
+                            <h4 class="font-semibold text-green-800">Регистрация успешна!</h4>
+                            <p class="text-green-700">Мы свяжемся с вами в ближайшее время для активации аккаунта.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-shield-alt text-pink-500 text-2xl mr-3"></i>
+                        <span class="font-bold text-xl">SafeGuard</span>
+                    </div>
+                    <p class="text-gray-400">Ваша безопасность - наш приоритет</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Быстрые ссылки</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="index.html" class="hover:text-pink-500 transition">Главная</a></li>
+                        <li><a href="platform.html" class="hover:text-pink-500 transition">О платформе</a></li>
+                        <li><a href="#" class="hover:text-pink-500 transition">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Правовая информация</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-pink-500 transition">Условия использования</a></li>
+                        <li><a href="#" class="hover:text-pink-500 transition">Политика конфиденциальности</a></li>
+                        <li><a href="#" class="hover:text-pink-500 transition">Лицензии</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Следите за нами</h4>
+                    <div class="flex space-x-4">
+                        <a href="#"
+                            class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-pink-500 transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-pink-500 transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-pink-500 transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-pink-500 transition">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 SafeGuard. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function handleSubmit(event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData);
+
+            if (!data.firstName || !data.lastName || !data.birthYear || !data.phone) {
+                showError('Пожалуйста, заполните все обязательные поля');
+                return;
+            }
+
+            const phoneRegex = /^[+]?[\d\s\-\(\)]{10,15}$/;
+            if (!phoneRegex.test(data.phone)) {
+                showError('Введите корректный номер телефона');
+                return;
+            }
+
+            const currentYear = new Date().getFullYear();
+            const age = currentYear - parseInt(data.birthYear);
+            if (age < 14 || age > 100) {
+                showError('Возраст должен быть от 14 до 100 лет');
+                return;
+            }
+
+            console.log('Отправка данных:', data);
+
+            document.getElementById('successMessage').classList.remove('hidden');
+
+            event.target.reset();
+
+            document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth' });
+
+            setTimeout(() => {
+                document.getElementById('successMessage').classList.add('hidden');
+            }, 5000);
+        }
+
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'bg-red-50 border border-red-200 rounded-lg p-4 mb-4';
+            errorDiv.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-exclamation-circle text-red-500 text-xl mr-3"></i>
+                    <p class="text-red-700">${message}</p>
+                </div>
+            `;
+
+            const form = document.getElementById('registrationForm');
+            form.parentNode.insertBefore(errorDiv, form);
+
+            setTimeout(() => {
+                errorDiv.remove();
+            }, 3000);
+        }
+
+        document.querySelector('input[name="phone"]').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 0) {
+                if (value[0] === '7' || value[0] === '8') {
+                    value = value.substring(0, 11);
+                } else {
+                    value = '7' + value.substring(0, 10);
+                }
+
+                let formatted = '';
+                if (value.length > 0) formatted = '+' + value.substring(0, 1);
+                if (value.length > 1) formatted += ' (' + value.substring(1, 4);
+                if (value.length > 4) formatted += ') ' + value.substring(4, 7);
+                if (value.length > 7) formatted += '-' + value.substring(7, 9);
+                if (value.length > 9) formatted += '-' + value.substring(9, 11);
+
+                e.target.value = formatted;
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const observer = new IntersectionObserver(function (entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.contact-card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'all 0.6s ease';
+                observer.observe(card);
+            });
+        });
+
+
+
+        // =================
+        // DROB DOWN START
+        // =================
+        const openBtn = document.getElementById("openDrawerBtn");
+        const closeBtn = document.getElementById("closeDrawerBtn");
+        const drawer = document.getElementById("drawer");
+        const overlay = document.getElementById("drawerOverlay");
+
+        function openDrawer() {
+            drawer.classList.remove("translate-x-full");
+            overlay.classList.remove("pointer-events-none");
+            overlay.classList.add("bg-opacity-40");
+        }
+
+        function closeDrawer() {
+            drawer.classList.add("translate-x-full");
+            overlay.classList.add("pointer-events-none");
+            overlay.classList.remove("bg-opacity-40");
+        }
+
+        openBtn.addEventListener("click", openDrawer);
+        closeBtn.addEventListener("click", closeDrawer);
+        overlay.addEventListener("click", closeDrawer);
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") closeDrawer();
+        });
+
+
+        
+        // =================
+        // SELCT  START
+        // =================
+        const languageBtn = document.getElementById("languageBtn");
+        const languageDropdown = document.getElementById("languageDropdown");
+        const selectedFlag = document.getElementById("selectedFlag");
+        const selectedLang = document.getElementById("selectedLang");
+
+        const languageOptions = document.querySelectorAll(".language-option");
+
+        languageBtn.addEventListener("click", () => {
+            languageDropdown.classList.toggle("hidden");
+        });
+
+        languageOptions.forEach(option => {
+            option.addEventListener("click", (e) => {
+                e.preventDefault();
+
+                const flagCode = option.dataset.lang;
+                const langName = option.dataset.name;
+                if (flagCode === "uz") selectedFlag.src = "https://flagcdn.com/w40/uz.png";
+                if (flagCode === "ru") selectedFlag.src = "https://flagcdn.com/w40/ru.png";
+                if (flagCode === "en") selectedFlag.src = "https://flagcdn.com/w40/gb.png";
+                selectedLang.textContent = langName;
+                languageDropdown.classList.add("hidden");
+                document.querySelectorAll(".language-option i").forEach(i => i.remove());
+                const checkIcon = document.createElement("i");
+                checkIcon.classList = "fas fa-check ml-auto text-pink-500";
+                option.appendChild(checkIcon);
+            });
+        });
+        document.addEventListener("click", (e) => {
+            if (!languageBtn.contains(e.target) && !languageDropdown.contains(e.target)) {
+                languageDropdown.classList.add("hidden");
+            }
+        });
+
+
+
+        const currentPage = window.location.pathname.split("/").pop();
+
+        const navHome = document.getElementById('nav-home');
+        const navAbout = document.getElementById('nav-about');
+        const navContact = document.getElementById('nav-contact');
+
+        if (currentPage === 'index.html') {
+            navHome.classList.add('text-pink-500', 'font-medium');
+            navAbout.classList.remove('text-pink-500', 'font-medium');
+            navContact.classList.remove('text-pink-500', 'font-medium');
+        } else if (currentPage === 'About.html') {
+            navAbout.classList.add('text-pink-500', 'font-medium');
+            navHome.classList.remove('text-pink-500', 'font-medium');
+            navContact.classList.remove('text-pink-500', 'font-medium');
+        } else if (currentPage === 'contacts.html') {
+            navContact.classList.add('text-pink-500', 'font-medium');
+            navHome.classList.remove('text-pink-500', 'font-medium');
+            navAbout.classList.remove('text-pink-500', 'font-medium');
+        }
+
+    </script>
+</body>
+
+</html>
